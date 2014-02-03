@@ -1,6 +1,6 @@
 (function() {
 
-	var proto_type, Class_Hacker, class_hacker_one, class_hacker_two, test_object, js_hacker, http, i, start, node_hacker;
+	var proto_type, Class_Hacker, class_hacker_one, class_hacker_two, test_object, js_hacker, http, i, j,node_hacker, urls;
 
 	// a prototype...
 	proto_type = {
@@ -65,29 +65,37 @@
 	console.log(js_hacker.abstraction);
 	console.log(js_hacker.get_alias());*/
 
+	// A little node app...
+
 	http = require('http');
+	urls = ['www.theironyard.com', 'www.naturalnews.com', 'www.youtube.com'];
 	
 	// Hacker's still need aliases and vendettas!
 	node_hacker = Object.create(proto_type);
+	// Important stuff to know!
 	node_hacker.wait_in_ms = 'milliseconds utilizing Node...';
 	node_hacker.wait_in_s = 'seconds utilizing Node...';
-	node_hacker.wait_in_s_calc = function(ms) {
+	node_hacker.wait_in_s_con = function(ms) {
 		var seconds;
 		seconds = (ms / 1000) % 60;
 		return seconds;
 	};
 
 	function fetchPage(url) {
+		var start;
 		start = new Date();
 		http.get({ host: url }, function(res) {
 			console.log('Got response from: ' + url);
 			console.log('Request took: ', new Date() - start, node_hacker.wait_in_ms);
-			console.log('Request took: ', node_hacker.wait_in_s_calc(new Date() - start), node_hacker.wait_in_s);
+			console.log('Request took: ', node_hacker.wait_in_s_con(new Date() - start), node_hacker.wait_in_s);
 		});
 	}
 
-	for (i = 0; i < 5; i += 1) {
-		fetchPage('www.theironyard.com');
+	for (i = 0; i < urls.length; i += 1) {
+		fetchPage(urls[i]);
+		for (j = 0; j < 4; j += 1) {
+			fetchPage(urls[i]);
+		}
 	}
 
 })();
