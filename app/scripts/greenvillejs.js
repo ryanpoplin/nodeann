@@ -1,9 +1,9 @@
 /**
 *
-* Quick Lesson Topics: 10 min...
+* Quick Lesson: 10 min...
 * An Introduction to...
 * JS Engine Scope Passes, Execution Context Objects, and Prototypes with Constructors...
-* Some future ECMAScript hipsterish will be included also... 
+* Some future ECMAScript hipsterisms will be included also... 
 *
 */
 
@@ -16,15 +16,18 @@
 /* Part One... */
 
 // 1st Pass: function args are the boss...
-// They can be optionally set a value before anything else in functional scope...
-(function(the_boss) {
+// They can be set to a value before anything else in functional scope...
+(function(the_boss, execution) {
 
-	// 1st Pass: console.log(the_boss) === 'The Boss'...
+	// console.log(the_boss, execution, proto_type);
+	// logs: The Boss is... 37 undefined
 
 	// 1st Pass: local vars are all declared and initialized as 'undefined'...
 	var 
 		// this is redundant as it's not undefined...
 		the_boss,
+		execution,
+		obj_obj,
 		proto_type, 
 		test_object, 
 		Constructor_Hacker, 
@@ -34,6 +37,7 @@
 		js_hacker, 
 		http, 
 		i, 
+		j,
 		node_hacker, 
 		urls;
 
@@ -52,7 +56,7 @@
 		// First Pass:
 	
 		{
-			// Hey, it's empty!
+			// Hey, it's the empty execution context object!
 		}
 	
 		{
@@ -83,27 +87,26 @@
 			the_boss: 'The Boss...',
 			js_hacker: 'Temp. string...',
 			log_it: function() {
-				// 
-				console.log('Simple example...');
-			}
-			// the invocation of 'log_it' will create a new execution context...
-			{
+				// the invocation of 'log_it' will create a new execution context...
 				// the new execution context...
-				// access granted to the contexts it's nested within...
-			}	
+				{{ 
+				console.log('Simple example...');
+					// access granted to the contexts it's nested within...
+				}}	
+			}
 		}
 
 	*/
 
 	/* Part Two... */
 
-	// our object framework...
+	// our prototype object framework...
 	proto_type = {
 		alias: 'Neck_Beard_0b10111',
 		get_alias: function() {
 			console.log('Your hacker alias is: ' + this.alias);
 		},
-		vendetta: 'Master Node...',
+		vendetta: 'Master a language and its environment/s...',
 		get_vendetta: function() {
 			console.log('Your vendetta is: ' + this.vendetta);
 		}
@@ -115,10 +118,12 @@
 
 	// cross-browser method...
 	Object.setPrototypeOf = Object.setPrototypeOf || function (obj, proto) {
+  		// not more __proto__ syntax...
   		obj.__proto__ = proto;
   		return obj; 
 	};
 
+	// 
 	Object.setPrototypeOf(test_object, proto_type);
 	// console.log(Object.getPrototypeOf(test_object));
 
@@ -141,25 +146,45 @@
 	};
 	Object.create = Object.create || objectCreate;
 
-	// alternative to using the 'new' keyword for instances...
-	make_hacker = function(fav_lang) {
+	obj_obj = {};
+	// {}
+	// console.log(obj_obj);
+	// {}
+	// console.log(obj_obj.__proto__);
+	// null...
+	// console.log(obj_obj.__proto__.__proto__);
+	// Runtime Error...
+	// console.log(obj_obj.__proto__.__proto__.__proto__);
+
+	// an alternative to using the 'new' keyword for instances...
+	make_hacker = function(ur_alias, fav_lang) {
 		var hacker;
 		hacker = Object.create(proto_type);
+		// all is good even though i didn't pass in or set 'ur_alias'...
 		hacker.fav_lang = fav_lang;
 		return hacker;
 	}
 
 	js_hacker = make_hacker('JavaScript');
 	// console.log(js_hacker);
+	console.log(js_hacker.get_alias());
 	// console.log(js_hacker.get_vendetta());
+
+	// proto_type...
+	// console.log(js_hacker.__proto__);
+	// {}...
+	// console.log(js_hacker.__proto__.__proto__);
+	// null...
+	// console.log(js_hacker.__proto__.__proto__.__proto__);
+	// Runtime Error...
+	// console.log(js_hacker.__proto__.__proto__.__proto__.__proto__);
 
 	http = require('http');
 	urls = ['www.theironyard.com', 'www.naturalnews.com', 'www.youtube.com'];
 	
-	// Utilizing Object.create() in a free-form manner...
+	// Utilizing Object.create() real quick...
 	// Hacker's still need aliases and vendettas!
 	node_hacker = Object.create(proto_type);
-	// Important stuff to know!
 	node_hacker.wait_in_ms = 'milliseconds utilizing Node...';
 	node_hacker.wait_in_s = 'seconds utilizing Node...';
 	node_hacker.wait_in_s_con = function(ms) {
@@ -182,4 +207,4 @@
 		fetchPage(urls[i]);
 	}
 
-})('The Boss...');
+})('The Boss is...', (20 + 20) - 3);
