@@ -14,6 +14,11 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 		router: null
 	};
 
+	// As basic as the below code is, I'm getting these errors when users sign in...
+	// Logging in gives the same error...
+	// The error for both functions: Signing and logging the user up multiple times 
+	// in a row...
+
 	app.views.index_view = Backbone.View.extend({
 		el: '#parsebone',
 		template: _.template($('#index-template').html()),
@@ -128,19 +133,60 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 	*
 	* I've got users signing up and logging in with the above code...
 	* Below I have the 'Parse' code for logging a user out, saving user data, 
-	* keeping the user logged in, 
+	* keeping the user logged in, and retrieving data...
 	*
+	* I understand that I am to translate this code into proper CoffeScript syntax
+	* plus its language features with Brunch's advanced Marionette scaffold. 
+	* However, I'm having problems understanding where the below
+	* code is supposed to fit into the application even as a pure Backbone app...
+	*
+	* I you guys could help guide me in the right direction, it would be most awesome!
+	* 
 	*/
 
 	/*
-		// keep a user logged in...
-		var loggedInUser = Parse.User.current();
+		
+		// check if a user is logged in...
+		
+		var loggedInUser;
+		loggedInUser = Parse.User.current();
 		if(!loggedInUser) {
-			//off you go, perform a log in
+			// Need to perform the log in...
 		} else {
 			console.log(loggedInUser.get("email"));
 		}	
-	
+
+		// save user's data...
+		
+		var user, Pro_Lang, pro_lang_one, pro_lang_two;
+		user = Parse.User.current();
+		Pro_Lang = Parse.Object.extend('Best Programming Language');
+		
+		pro_lang_one = new Pro_Lang({'name':'JavaScript','user':user});
+		pro_lang_one.save();
+		 
+		pro_lang_two = new Pro_Lang({'name':'C++',"user":user});
+		pro_lang_two.save();
+
+		// retrieve user's data... 
+		
+		var Pro_Lang, q, i, lang;
+		Pro_Lang = Parse.Object.extend("Best Programming Language");
+		q = new Parse.Query(Pro_Lang);
+		q.equalTo('user', user);
+		q.find({
+			success: function(results){
+				for (i in results){	
+					lang = results[i];
+					console.log(lang.get('name'));
+				}
+			}
+		});
+
+		// log the current user out...
+
+		Parse.User.logOut();
+
 	*/
 
 })(jQuery);
