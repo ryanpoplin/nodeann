@@ -1,9 +1,9 @@
 /**
 *
-* Quick Lesson: 10 min...
+* Quick Lesson: Should be around 10 min...
 * An Introduction to...
-* JS Engine Scope Passes, Execution Context Objects, and Prototypes with Constructors...
-* Some future ECMAScript hipsterisms will be included also... 
+* JS Engine Scope Passes, Execution Context Objects, and utilizing Prototypes...
+* Some future ECMAScript methods will be explored... 
 *
 */
 
@@ -19,7 +19,7 @@
 // They can be set to a value before anything else in functional scope...
 (function(the_boss, execution) {
 
-	// console.log(the_boss, execution, proto_type);
+	console.log(the_boss, execution, proto_type);
 	// logs: The Boss is... 37 undefined
 
 	// 1st Pass: local vars are all declared and initialized as 'undefined'...
@@ -112,6 +112,8 @@
 		}
 	};
 
+	// Future ECMAScript methods...
+
 	test_object = {
 		name: 'Test Object...'
 	};
@@ -125,7 +127,7 @@
 
 	// 
 	Object.setPrototypeOf(test_object, proto_type);
-	// console.log(Object.getPrototypeOf(test_object));
+	console.log(Object.getPrototypeOf(test_object));
 
 	Constructor_Hacker = function(alias) {
 		this.alias = alias;
@@ -134,8 +136,8 @@
 	Constructor_Hacker.prototype = proto_type;
 
 	constructor_hacker_one = new Constructor_Hacker('Nihilus');
-	// console.log(constructor_hacker_one);
-	// console.log(constructor_hacker_one.get_alias());
+	console.log(constructor_hacker_one);
+	console.log(constructor_hacker_one.get_alias());
 
 	// cross-browser method...
 	objectCreate = function(arg) {
@@ -148,34 +150,34 @@
 
 	obj_obj = {};
 	// {}
-	// console.log(obj_obj);
+	console.log(obj_obj);
 	// {}
-	// console.log(obj_obj.__proto__);
+	console.log(obj_obj.__proto__);
 	// null...
-	// console.log(obj_obj.__proto__.__proto__);
+	console.log(obj_obj.__proto__.__proto__);
 	// Runtime Error...
 	// console.log(obj_obj.__proto__.__proto__.__proto__);
 
 	// an alternative to using the 'new' keyword for instances...
-	make_hacker = function(ur_alias, fav_lang) {
+	make_hacker = function(fav_lang) {
 		var hacker;
 		hacker = Object.create(proto_type);
-		// all is good even though i didn't pass in or set 'ur_alias'...
 		hacker.fav_lang = fav_lang;
 		return hacker;
-	}
+	};
 
 	js_hacker = make_hacker('JavaScript');
-	// console.log(js_hacker);
+	console.log(js_hacker);
 	console.log(js_hacker.get_alias());
-	// console.log(js_hacker.get_vendetta());
+	console.log(js_hacker.get_vendetta());
+	console.log(js_hacker.fav_lang);
 
 	// proto_type...
-	// console.log(js_hacker.__proto__);
+	console.log(js_hacker.__proto__);
 	// {}...
-	// console.log(js_hacker.__proto__.__proto__);
+	console.log(js_hacker.__proto__.__proto__);
 	// null...
-	// console.log(js_hacker.__proto__.__proto__.__proto__);
+	console.log(js_hacker.__proto__.__proto__.__proto__);
 	// Runtime Error...
 	// console.log(js_hacker.__proto__.__proto__.__proto__.__proto__);
 
