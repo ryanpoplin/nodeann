@@ -79,6 +79,9 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 		}
 	});
 
+	// When the user is logged in, their specific data should show here...
+	// Info: Username, Email, and Password...
+	// They should be able to edit this information, cancel and save those changes...
 	app.views.profile_view = Backbone.View.extend({
 		el: '#parsebone',
 		template: _.template($('#profile-template').html()),
@@ -120,5 +123,24 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 	core_router = new app.router();
 
 	Backbone.history.start();
+
+	/**
+	*
+	* I've got users signing up and logging in with the above code...
+	* Below I have the 'Parse' code for logging a user out, saving user data, 
+	* keeping the user logged in, 
+	*
+	*/
+
+	/*
+		// keep a user logged in...
+		var loggedInUser = Parse.User.current();
+		if(!loggedInUser) {
+			//off you go, perform a log in
+		} else {
+			console.log(loggedInUser.get("email"));
+		}	
+	
+	*/
 
 })(jQuery);
