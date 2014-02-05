@@ -89,3 +89,15 @@ console.log('Server running at http://127.0.0.1:5555/');*/
 	counter.removeListener('incremented', callback);
 	counter.increment();
 })();
+
+(function() {
+	var callback;
+	callback = function() { console.log('Node.js...') };
+	function log_it(callback) { 
+		console.log();
+		if (callback && typeof(callback) === 'function') {
+			callback();
+		} 
+	}
+	log_it(callback);
+})();

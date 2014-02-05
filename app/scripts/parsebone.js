@@ -62,9 +62,11 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 				success: function(user) {
 					alert('Thank you for signing up!');
 					core_router.navigate('', {trigger: true});
+					return this;
 				},
 				error: function(user, error) {
 					alert("Error: " + error.code + " " + error.message);
+					return this;
 				}
 			});
 		},
