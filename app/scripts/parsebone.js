@@ -118,9 +118,10 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 					console.log(username);
 					email = current_user.get('email');
 					console.log(email);
-					$('#user-data').append('<span>' + username + '</span>');
+
+					$('#user-heading').append('<span> Howdy, ' + username + '</span>');
 					$('#user-data').append('<br>');
-					$('#user-data').append('<span>' + email + '</span>');
+					$('#user-data').append('<span> email: ' + email + '</span>');
 				},
 				error: function(object, error) {
 					console.log('You are a dumbass...');
