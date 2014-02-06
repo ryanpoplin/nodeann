@@ -140,7 +140,7 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 	* However, I'm having problems understanding where the below
 	* code is supposed to fit into the application even as a pure Backbone app...
 	*
-	* I you guys could help guide me in the right direction, it would be most awesome!
+	* If you guys could help guide me in the right direction, it would be most awesome!
 	* 
 	*/
 
@@ -188,5 +188,109 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 		Parse.User.logOut();
 
 	*/
+
+})(jQuery);
+
+// Just Parse.com JS Docs Testing...
+
+(function($) {
+
+	var User_Score, 
+		user_one_score,
+		User_Pro_Lang,
+		Test_Data,
+		test_data_one,
+		test_query_one,
+		test_query_two,
+		player_name_one,
+		player_name_two;
+	
+	User_Score = Parse.Object.extend('User_Score');
+	user_one_score = new User_Score();
+
+	User_Pro_Lang = Parse.Object.extend('User_Pro_Lang', {
+		// Instance Methods...
+		initialize: function() {
+			console.log('User_Pro_Lang init...');
+		}
+	}, {
+		// Class Methods...
+	});
+
+	user_pro_lang_one = new User_Pro_Lang();
+	console.log(user_pro_lang_one);
+
+	// Testing data save...
+	// I'll be utilizing Test_Data and test_data_one for the rest of the examples...
+	Test_Data = Parse.Object.extend('Test_Data');
+	test_data_one = new Test_Data();
+	
+	test_data_one.set('score', 25);
+	test_data_one.set('playerName', 'Poplinr');
+	test_data_one.set('completed', false);
+
+	/*test_data_one.save(null, {
+		success: function(test_data_one) {
+			console.log(test_data_one.id);
+		},
+		error: function(test_data_one, error) {
+			console.log(error.description);
+		}
+	});*/
+
+	test_query_one = new Parse.Query(Test_Data);
+	test_query_one.get('3eaVjWhcvV', {
+		success: function(test_data_one) {
+			console.log('Data retrieved...');
+		},
+		error: function(object, error) {
+			console.log('You are a dumbass...');
+		}
+	});
+
+	player_name_one = test_data_one.get('playerName');
+	console.log(player_name_one);
+
+	test_data_two = new Test_Data();
+
+	test_data_two.set('score', 35);
+	test_data_two.set('playerName', 'Vredesbyrdann');
+	test_data_two.set('completed', false);
+
+	/*test_data_two.save(null, {
+		success: function(test_data_two) {
+			console.log(test_data_two.id);
+		},
+		error: function(test_data_two, error) {
+			console.log(error.description);
+		}
+	});*/
+
+	test_query_two = new Parse.Query(Test_Data);
+	test_query_two.get('jjkdSfcp1c', {
+		success: function(test_data_two) {
+			console.log('Data retrieved...');
+		},
+		error: function(object, error) {
+			console.log('You are a dumbass...');
+		}
+	});
+
+	player_name_two = test_data_two.get('playerName');
+	console.log(player_name_two);
+	player_score_two = test_data_two.get('score');
+	console.log(player_score_two);
+
+	// Why refreshing?
+	test_data_two.fetch({
+		success: function(test_data_two) {
+			console.log('test_data_two was refreshed!');
+		},
+		error: function(test_data_two, error) {
+			console.log('You are a dumbass...')
+		}
+	});
+
+	
 
 })(jQuery);
