@@ -6,6 +6,8 @@
 Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPuEA66dxQO1ZjR15kY2b7Tjj");
 
 (function($) {
+
+	// Users .signUp() and the just make updates with .save(), etc...
 	
 	var app, user, router, core_router;
 
@@ -93,8 +95,37 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 		initialize: function() {
 			console.log('profile_view init...');
 		},
+		events: {
+			'click #log-out': 'log_out'
+		},	
+		log_out: function() {
+			alert('You\'ve logged out ya bastard!');
+			Parse.User.logOut();
+			core_router.navigate('', {trigger: true});
+		},
 		render: function() {
+			var current_user, user_query, current_user_username;
 			this.$el.html(this.template());
+			current_user = Parse.User.current();
+			console.log(current_user);
+			console.log(current_user.id);
+			user_query = new Parse.Query(Parse.User);
+			user_query.get(current_user.id, {
+				success: function(something) {
+					var username, email;
+					console.log('Data retrieved for the current user...');
+					username = current_user.get('username');
+					console.log(username);
+					email = current_user.get('email');
+					console.log(email);
+					$('#user-data').append('<span>' + username + '</span>');
+					$('#user-data').append('<br>');
+					$('#user-data').append('<span>' + email + '</span>');
+				},
+				error: function(object, error) {
+					console.log('You are a dumbass...');
+				}
+			});
 			return this;
 		}
 	});
@@ -291,6 +322,39 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 		}
 	});
 
+	test_data_two.id = 'jjkdSfcp1c';
 	
+	test_data_two.set('score', 55);
+
+	test_data_two.increment('score', 24);
+	
+	/*test_data_two.save(null, {
+	  success: function(point) {
+	    // Saved successfully.
+	  },
+	  error: function(point, error) {
+	    // The save failed.
+	    // error is a Parse.Error with an error code and description.
+	  }
+	});*/
+
+	// Any extensive data array saves in Parse in general?
+
+	test_data_three = new Test_Data();
+	test_data_three.set('name', 'Yo Mama...');
+	// test_data_three.save(null);
+	test_query_three = new Parse.Query(Test_Data);
+	test_query_three.get('GrcijOemXy', {
+		success: function(test_data_two) {
+			console.log('Data retrieved...');
+		},
+		error: function(object, error) {
+			console.log('You are a dumbass...');
+		}
+	});
+	test_data_three.id = 'GrcijOemXy';
+	/*test_data_three.destroy();*/
+	// test_data_three.unset('name');
+	// test_data_three.save();
 
 })(jQuery);
