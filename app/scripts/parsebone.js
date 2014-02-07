@@ -1,13 +1,6 @@
-/**
-* Full Stack User Interactions With Parse.com and Backbone.js...
-*/
-
-// Keys...
 Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPuEA66dxQO1ZjR15kY2b7Tjj");
 
 (function($) {
-
-	// Users .signUp() and the just make updates with .save(), etc...
 	
 	var app, user, router, core_router;
 
@@ -15,11 +8,6 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 		views: {},
 		router: null
 	};
-
-	// As basic as the below code is, I'm getting these errors when users sign in...
-	// Logging in gives the same error...
-	// The error for both functions: Signing and logging the user up multiple times 
-	// in a row...
 
 	app.views.index_view = Backbone.View.extend({
 		el: '#parsebone',
@@ -33,11 +21,13 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 			password = $('#log-in-password').val();
 			Parse.User.logIn(username, password, {
 				success: function(user) {
-					alert(user.get("email") + ' you have been logged in...');
+					// alert(user.get("email") + ' you have been logged in...');
 					core_router.navigate('profile', {trigger: true});
+					return this;
 				},
 				error: function(user, error) {
 					alert('An error has occured...');
+					return this;
 				}
 			});
 		},
@@ -67,7 +57,7 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 			user.set("password", password);
 			user.signUp(null, {
 				success: function(user) {
-					alert('Thank you for signing up!');
+					// alert('Thank you for signing up!');
 					core_router.navigate('', {trigger: true});
 					return this;
 				},
@@ -86,9 +76,6 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 		}
 	});
 
-	// When the user is logged in, their specific data should show here...
-	// Info: Username, Email, and Password...
-	// They should be able to edit this information, cancel and save those changes...
 	app.views.profile_view = Backbone.View.extend({
 		el: '#parsebone',
 		template: _.template($('#profile-template').html()),
@@ -96,39 +83,58 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 			console.log('profile_view init...');
 		},
 		events: {
-			'click #log-out': 'log_out'
+			'click #log-out': 'log_out',
+			'click #submit-post': 'submit_post'
 		},	
 		log_out: function() {
-			alert('You\'ve logged out ya bastard!');
 			Parse.User.logOut();
 			core_router.navigate('', {trigger: true});
 		},
-		render: function() {
-			var current_user, user_query, current_user_username;
-			this.$el.html(this.template());
+		submit_post: function() {
+			// event.preventDefault()
+			var post_textarea, current_user, post_array, i;
 			current_user = Parse.User.current();
-			console.log(current_user);
-			console.log(current_user.id);
-			user_query = new Parse.Query(Parse.User);
-			user_query.get(current_user.id, {
-				success: function(something) {
-					var username, email;
-					console.log('Data retrieved for the current user...');
-					username = current_user.get('username');
-					console.log(username);
-					email = current_user.get('email');
-					console.log(email);
-
-					$('#user-heading').append('<span> Howdy, ' + username + '</span>');
-					$('#user-data').append('<br>');
-					$('#user-data').append('<span> email: ' + email + '</span>');
-				},
-				error: function(object, error) {
-					console.log('You are a dumbass...');
-				}
-			});
+			post_textarea = $('#post-textarea').val();
+			/*if (post_textarea === '') {
+				// alert('Type something in that post!');
+			} else {*/
+				current_user.add('post', post_textarea);
+				current_user.save(null, {
+					success: function() {
+						console.log('...');
+					},
+					error: function() {
+						alert('Error...');
+					}
+				});
+			//}
+			this.render();
 			return this;
-		}
+		},
+		render: function() {
+			var post_array, i;
+			var current_user, username, email;
+			current_user = Parse.User.current();
+			this.$el.html(this.template());
+			// alert(current_user.id);
+			username = current_user.get('username');
+			// alert(username);
+			email = current_user.get('email');
+			// alert(email);
+			post_array = current_user.get('post');
+			$('#user-heading').append('<span> Howdy, ' + username + '</span>');
+			$('#user-data').append('<br>');
+			$('#user-data').append('<span> email: ' + email + '</span>');
+			if (post_array !== undefined) {	
+				// post_array.reverse();
+				for (i = 0; i < post_array.length; i += 1) {	
+					$('#post-area').append('<p>' + post_array[i] + '</p>');
+				}
+			} else {
+				$('#post-area').append('<p>Add some posts...</p>');
+			}
+			return this;
+		}	
 	});
 
 	app.router = Backbone.Router.extend({
@@ -160,66 +166,6 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 	core_router = new app.router();
 
 	Backbone.history.start();
-
-	/**
-	*
-	* I've got users signing up and logging in with the above code...
-	* Below I have the 'Parse' code for logging a user out, saving user data, 
-	* keeping the user logged in, and retrieving data...
-	*
-	* I understand that I am to translate this code into proper CoffeScript syntax
-	* plus its language features with Brunch's advanced Marionette scaffold. 
-	* However, I'm having problems understanding where the below
-	* code is supposed to fit into the application even as a pure Backbone app...
-	*
-	* If you guys could help guide me in the right direction, it would be most awesome!
-	* 
-	*/
-
-	/*
-		
-		// check if a user is logged in...
-		
-		var loggedInUser;
-		loggedInUser = Parse.User.current();
-		if(!loggedInUser) {
-			// Need to perform the log in...
-		} else {
-			console.log(loggedInUser.get("email"));
-		}	
-
-		// save user's data...
-		
-		var user, Pro_Lang, pro_lang_one, pro_lang_two;
-		user = Parse.User.current();
-		Pro_Lang = Parse.Object.extend('Best Programming Language');
-		
-		pro_lang_one = new Pro_Lang({'name':'JavaScript','user':user});
-		pro_lang_one.save();
-		 
-		pro_lang_two = new Pro_Lang({'name':'C++',"user":user});
-		pro_lang_two.save();
-
-		// retrieve user's data... 
-		
-		var Pro_Lang, q, i, lang;
-		Pro_Lang = Parse.Object.extend("Best Programming Language");
-		q = new Parse.Query(Pro_Lang);
-		q.equalTo('user', user);
-		q.find({
-			success: function(results){
-				for (i in results){	
-					lang = results[i];
-					console.log(lang.get('name'));
-				}
-			}
-		});
-
-		// log the current user out...
-
-		Parse.User.logOut();
-
-	*/
 
 })(jQuery);
 
