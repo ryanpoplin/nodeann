@@ -126,14 +126,14 @@ Parse.initialize("tbIOLEXYyQMlsiZvdHpwpfxM1TfYf2AWuaY1ClAP", "PPL1IkNWuasv3kNjPu
 			$('#user-data').append('<br>');
 			$('#user-data').append('<span> email: ' + email + '</span>');
 			if (post_array !== undefined) {	
-				// post_array.reverse();
+				post_array.reverse();
 				for (i = 0; i < post_array.length; i += 1) {	
 					$('#post-area').append('<p>' + post_array[i] + '</p>');
 				}
 			} else {
 				$('#post-area').append('<p>Add some posts...</p>');
 			}
-			return this;
+			// return this;
 		}	
 	});
 
